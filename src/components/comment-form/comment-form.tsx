@@ -1,18 +1,30 @@
 import { useState, ChangeEvent } from 'react';
 
+type ReviewFormData = {
+  review: string;
+  rating: number;
+};
+
+const MAX_COMMENT_LENGTH = 300;
+
 function CommentForm(): JSX.Element {
-  const [rating, setRating] = useState(0);
-  const [review, setReview] = useState('');
+  const [review, setReview] = useState<ReviewFormData>({
+    review: '',
+    rating: 0,
+  });
 
   const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setRating(Number(evt.target.value));
+    setReview({ ...review, rating: Number(evt.target.value) });
   };
 
   const handleReviewChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
-    setReview(evt.target.value);
+    setReview({ ...review, review: evt.target.value });
   };
 
-  const isSubmitDisabled = review.length < 50 || rating === 0;
+  const isSubmitDisabled =
+    review.review.length < 50 ||
+    review.review.length > MAX_COMMENT_LENGTH ||
+    review.rating === 0;
 
   return (
     <form className="reviews__form form" action="#" method="post">
@@ -26,7 +38,7 @@ function CommentForm(): JSX.Element {
               value={value}
               id={`${value}-stars`}
               type="radio"
-              checked={rating === value}
+              checked={review.rating === value}
               onChange={handleRatingChange}
             />
             <label
@@ -46,7 +58,7 @@ function CommentForm(): JSX.Element {
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        value={review}
+        value={review.review}
         onChange={handleReviewChange}
       />
       <div className="reviews__button-wrapper">
