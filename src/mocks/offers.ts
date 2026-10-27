@@ -47,6 +47,75 @@ export const offers: Offer[] = [
     rating: 4,
   },
   {
+    id: '2af99e71-bd0b-46a1-9c38-f209c8777386',
+    title: 'Canal View Prinsengracht',
+    type: 'apartment',
+    price: 320,
+    previewImage: 'https://14.design.htmlacademy.pro/static/hotel/11.jpg',
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.37454,
+        longitude: 4.897976,
+        zoom: 13
+      }
+    },
+    location: {
+      latitude: 52.3609553943508,
+      longitude: 4.85309666406198,
+      zoom: 16
+    },
+    isFavorite: false,
+    isPremium: true,
+    rating: 4
+  },
+  {
+    id: '98ccae32-0bd8-4228-88b9-b7f6d6fde8d2',
+    title: 'Wood and stone place',
+    type: 'hotel',
+    price: 153,
+    previewImage: 'https://14.design.htmlacademy.pro/static/hotel/11.jpg',
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.37454,
+        longitude: 4.897976,
+        zoom: 13
+      }
+    },
+    location: {
+      latitude: 52.3909553943508,
+      longitude: 4.929309666406198,
+      zoom: 16
+    },
+    isFavorite: false,
+    isPremium: true,
+    rating: 2.6
+  },
+  {
+    id: '186f7f02-bee7-4d1a-8637-ee1524f808fa',
+    title: 'Nice, cozy, warm big bed apartment',
+    type: 'house',
+    price: 925,
+    previewImage: 'https://14.design.htmlacademy.pro/static/hotel/19.jpg',
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.37454,
+        longitude: 4.897976,
+        zoom: 13
+      }
+    },
+    location: {
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198,
+      zoom: 16
+    },
+    isFavorite: false,
+    isPremium: true,
+    rating: 2.7
+  },
+  /* {
     id: 'd9a6842a-f126-4952-8763-863230d84f19',
     title: 'Canal View Prinsengracht',
     type: 'hotel',
@@ -275,5 +344,5 @@ export const offers: Offer[] = [
     isFavorite: false,
     isPremium: false,
     rating: 3.8
-  },
+  }, */
 ];
