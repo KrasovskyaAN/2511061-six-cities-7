@@ -5,6 +5,8 @@ import CommentForm from '../../components/comment-form/comment-form';
 import type { Offer } from '../../mocks/offers';
 import { reviews } from '../../mocks/reviews';
 import Card from '../../components/card/card';
+import ReviewsList from '../../components/reviews-list/reviews-list';
+import Map from '../../components/map/map';
 
 type OfferPageProps = {
   offers: Offer[];
@@ -84,7 +86,7 @@ function Offer({ offers }: OfferPageProps): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{width: '80%'}}></span>
+                  <span style={{width: `${(offer.rating / 5) * 100}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">{offer.rating}</span>
@@ -99,42 +101,14 @@ function Offer({ offers }: OfferPageProps): JSX.Element {
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <section className="offer__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
-                <ul className="reviews__list">
-                  {reviews.map((review) => (
-                    <li className="reviews__item" key={review.id}>
-                      <div className="reviews__user user">
-                        <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                          <img className="reviews__avatar user__avatar" src={review.user.avatarUrl} width="54" height="54" alt="Reviews avatar"/>
-                        </div>
-                        <span className="reviews__user-name">{review.user.name}</span>
-                      </div>
-                      <div className="reviews__info">
-                        <div className="reviews__rating rating">
-                          <div className="reviews__stars rating__stars">
-                            <span style={{width: '80%'}}></span>
-                            <span className="visually-hidden">Rating</span>
-                          </div>
-                        </div>
-                        <p className="reviews__text">{review.comment}</p>
-                        <time
-                          className="reviews__time"
-                          dateTime={review.date}
-                        >
-                          {new Date(review.date).toLocaleString('en-US', {
-                            month: 'long',
-                            year: 'numeric',
-                          })}
-                        </time>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+                <ReviewsList reviews={reviews} />
                 <CommentForm />
               </section>
             </div>
           </div>
-          <section className="offer__map map"></section>
+          <section className="offer__map map">
+            <Map offers={nearOffers} />
+          </section>
         </section>
 
         {nearOffers.length > 0 && (
