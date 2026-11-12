@@ -1,12 +1,11 @@
 import Card from '../../components/card/card';
 import type { Offer } from '../../mocks/offers';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../hooks';
 
-type FavoritesPageProps = {
-  offers: Offer[];
-};
+function FavoritesPage(): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
 
-function Favorites({ offers }: FavoritesPageProps): JSX.Element {
   const favoriteOffers = offers.filter((offer) => offer.isFavorite);
   const grouped = favoriteOffers.reduce<Record<string, Offer[]>>((acc, offer) => {
     const city = offer.city.name;
@@ -81,4 +80,4 @@ function Favorites({ offers }: FavoritesPageProps): JSX.Element {
   );
 }
 
-export default Favorites;
+export default FavoritesPage;
