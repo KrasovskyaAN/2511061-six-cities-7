@@ -6,18 +6,24 @@ import Map from '../../components/map/map';
 import CitiesList from '../../components/cities-list/cities-list';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeCity } from '../../store/action';
-import { CITIES } from '../../const';
+import { CITIES, SortType, SortTypeValue } from '../../const';
+import { sortOffers } from '../../utils/sort';
+import Sorting from '../../components/sorting/sorting';
 
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const city = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => state.offers);
-  const [, setActiveOfferId] = useState<string | null>(null);
+
+  const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
+  const [activeSort, setActiveSort] = useState<SortTypeValue>(SortType.Popular);
 
   const cityOffers = offers.filter((offer) => offer.city.name === city);
+  const sortedOffers = sortOffers(cityOffers, activeSort);
 
   const handleCityChange = (newCity: string) => {
     dispatch(changeCity(newCity));
+    setActiveSort(SortType.Popular);
   };
 
   return (
@@ -65,27 +71,20 @@ function MainPage(): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{cityOffers.length} places to stay in {city}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
-              <OffersList offers={cityOffers} onCardHover={setActiveOfferId} />
+              <b className="places__found">{sortedOffers.length} places to stay in {city}</b>
+              <Sorting activeSort={activeSort} onSortChange={setActiveSort} />
+              <OffersList
+                offers={sortedOffers}
+                onCardHover={setActiveOfferId}
+              />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map offers={cityOffers} city={city} />
+                <Map
+                  offers={sortedOffers}
+                  city={city}
+                  activeOfferId={activeOfferId}
+                />
               </section>
             </div>
           </div>

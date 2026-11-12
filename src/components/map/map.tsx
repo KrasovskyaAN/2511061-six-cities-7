@@ -4,9 +4,22 @@ import 'leaflet/dist/leaflet.css';
 import type { Offer } from '../../mocks/offers';
 import useMap from './useMap';
 
+const defaultIcon = leaflet.icon({
+  iconUrl: 'img/pin.svg',
+  iconSize: [27, 39],
+  iconAnchor: [13, 39],
+});
+
+const activeIcon = leaflet.icon({
+  iconUrl: 'img/pin-active.svg',
+  iconSize: [27, 39],
+  iconAnchor: [13, 39],
+});
+
 type MapProps = {
   offers: Offer[];
   city: string;
+  activeOfferId: string | null;
 };
 
 const CITY_LOCATIONS: Record<string, { lat: number; lng: number; zoom: number }> = {
@@ -18,7 +31,7 @@ const CITY_LOCATIONS: Record<string, { lat: number; lng: number; zoom: number }>
   Dusseldorf: { lat: 51.225402, lng: 6.776314, zoom: 12 },
 };
 
-function Map({ offers, city }: MapProps): JSX.Element {
+function Map({ offers, city, activeOfferId }: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const cityLocation = CITY_LOCATIONS[city] ?? CITY_LOCATIONS.Paris;
   const map = useMap(mapRef, cityLocation);
@@ -32,17 +45,22 @@ function Map({ offers, city }: MapProps): JSX.Element {
 
     offers.forEach((offer) => {
       leaflet
-        .marker({
-          lat: offer.location.latitude,
-          lng: offer.location.longitude,
-        })
+        .marker(
+          {
+            lat: offer.location.latitude,
+            lng: offer.location.longitude,
+          },
+          {
+            icon: offer.id === activeOfferId ? activeIcon : defaultIcon,
+          }
+        )
         .addTo(markersLayer);
     });
 
     return () => {
       markersLayer.remove();
     };
-  }, [map, offers]);
+  }, [map, offers, activeOfferId]);
 
   return <div style={{ height: '100%', minHeight: '500px' }} ref={mapRef}></div>;
 }
