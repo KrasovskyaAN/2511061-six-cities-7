@@ -3,7 +3,7 @@ import type { Offer } from '../../mocks/offers';
 
 type OffersListProps = {
   offers: Offer[];
-  onCardHover: (id: string | null) => void;
+  onCardHover?: (id: string | null) => void;
   variant?: 'cities' | 'near-places';
   listClassName?: string;
 };
@@ -22,7 +22,7 @@ function OffersList({
           offer={offer}
           variant={variant}
           onMouseEnter={onCardHover}
-          onMouseLeave={() => onCardHover(null)}
+          onMouseLeave={() => onCardHover?.(null)}
         />
       ))}
     </div>

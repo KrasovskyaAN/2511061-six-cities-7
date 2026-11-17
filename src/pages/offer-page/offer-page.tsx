@@ -2,18 +2,15 @@ import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import NotFoundPage from '../not-found-page/not-found-page';
 import CommentForm from '../../components/comment-form/comment-form';
-import type { Offer } from '../../mocks/offers';
 import { reviews } from '../../mocks/reviews';
-import Card from '../../components/card/card';
 import ReviewsList from '../../components/reviews-list/reviews-list';
+import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
+import { useAppSelector } from '../../hooks';
 
-type OfferPageProps = {
-  offers: Offer[];
-};
-
-function Offer({ offers }: OfferPageProps): JSX.Element {
+function OfferPage(): JSX.Element {
   const { id } = useParams();
+  const offers = useAppSelector((state) => state.offers);
   const offer = offers.find((item) => item.id === id);
 
   if (!offer) {
@@ -107,7 +104,7 @@ function Offer({ offers }: OfferPageProps): JSX.Element {
             </div>
           </div>
           <section className="offer__map map">
-            <Map offers={nearOffers} />
+            <Map offers={nearOffers} city={offer.city.name} />
           </section>
         </section>
 
@@ -116,9 +113,11 @@ function Offer({ offers }: OfferPageProps): JSX.Element {
             <section className="near-places places">
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
               <div className="near-places__list places__list">
-                {nearOffers.map((nearOffer) => (
-                  <Card key={nearOffer.id} offer={nearOffer} variant="near-places" />
-                ))}
+                <OffersList
+                  offers={nearOffers}
+                  variant="near-places"
+                  listClassName="near-places__list places__list"
+                />
               </div>
             </section>
           </div>
@@ -128,4 +127,4 @@ function Offer({ offers }: OfferPageProps): JSX.Element {
   );
 }
 
-export default Offer;
+export default OfferPage;
