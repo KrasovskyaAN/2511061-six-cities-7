@@ -7,13 +7,11 @@ import ReviewsList from '../../components/reviews-list/reviews-list';
 import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 import { useAppSelector } from '../../hooks';
-import { useState } from 'react';
 
 function OfferPage(): JSX.Element {
   const { id } = useParams();
   const offers = useAppSelector((state) => state.offers);
   const offer = offers.find((item) => item.id === id);
-  const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
 
   if (!offer) {
     return <NotFoundPage />;
@@ -106,7 +104,7 @@ function OfferPage(): JSX.Element {
             </div>
           </div>
           <section className="offer__map map">
-            <Map offers={nearOffers} city={offer.city.name} activeOfferId={activeOfferId} />
+            <Map offers={nearOffers} city={offer.city.name}activeOfferId={null} />
           </section>
         </section>
 
@@ -119,7 +117,6 @@ function OfferPage(): JSX.Element {
                   offers={nearOffers}
                   variant="near-places"
                   listClassName="near-places__list places__list"
-                  onCardHover={setActiveOfferId}
                 />
               </div>
             </section>
