@@ -323,29 +323,6 @@ export const offers: Offer[] = [
     rating: 4.4
   },
   {
-    id: 'd2d55889-b101-4ce3-915a-ec75e5031a0d',
-    title: 'Nice, cozy, warm big bed apartment',
-    type: 'apartment',
-    price: 375,
-    previewImage: 'https://14.design.htmlacademy.pro/static/hotel/16.jpg',
-    city: {
-      name: 'Paris',
-      location: {
-        latitude: 48.85661,
-        longitude: 2.351499,
-        zoom: 13
-      }
-    },
-    location: {
-      latitude: 48.87961000000001,
-      longitude: 2.353499,
-      zoom: 16
-    },
-    isFavorite: false,
-    isPremium: false,
-    rating: 3.8
-  },
-  {
     id: '1153ca1f-08e7-470e-94f8-9d9c5903abf3',
     title: 'Beautiful & luxurious apartment at great location',
     type: 'house',
