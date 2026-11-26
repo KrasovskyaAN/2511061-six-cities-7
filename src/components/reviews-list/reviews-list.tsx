@@ -1,5 +1,5 @@
 import Review from '../review/review';
-import type { Review as ReviewType } from '../../mocks/reviews';
+import type { Review as ReviewType } from '../../store/types';
 
 type ReviewsListProps = {
   reviews: ReviewType[];

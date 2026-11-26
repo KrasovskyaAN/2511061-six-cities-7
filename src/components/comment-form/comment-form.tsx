@@ -1,4 +1,6 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { postComment } from '../../store/offer-thunk';
 
 type ReviewFormData = {
   review: string;
@@ -6,8 +8,14 @@ type ReviewFormData = {
 };
 
 const MAX_COMMENT_LENGTH = 300;
+const MIN_COMMENT_LENGTH = 50;
 
-function CommentForm(): JSX.Element {
+type CommentFormProps = { offerId: string };
+
+function CommentForm({ offerId }: CommentFormProps): JSX.Element {
+  const dispatch = useAppDispatch();
+  const isSending = useAppSelector((state) => state.isCommentSending);
+  const [error, setError] = useState<string | null>(null);
   const [review, setReview] = useState<ReviewFormData>({
     review: '',
     rating: 0,
@@ -22,12 +30,30 @@ function CommentForm(): JSX.Element {
   };
 
   const isSubmitDisabled =
-    review.review.length < 50 ||
+    review.review.length < MIN_COMMENT_LENGTH ||
     review.review.length > MAX_COMMENT_LENGTH ||
-    review.rating === 0;
+    review.rating === 0 ||
+    isSending;
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    setError(null);
+
+    void (async () => {
+      const result = await dispatch(
+        postComment({ offerId, comment: review.review, rating: review.rating })
+      );
+
+      if (postComment.fulfilled.match(result)) {
+        setReview({ review: '', rating: 0 });
+      } else {
+        setError(String(result.payload ?? 'Failed to send comment'));
+      }
+    })();
+  };
 
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {[5, 4, 3, 2, 1].map((value) => (
@@ -40,6 +66,7 @@ function CommentForm(): JSX.Element {
               type="radio"
               checked={review.rating === value}
               onChange={handleRatingChange}
+              disabled={isSending}
             />
             <label
               htmlFor={`${value}-stars`}
@@ -60,7 +87,9 @@ function CommentForm(): JSX.Element {
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={review.review}
         onChange={handleReviewChange}
+        disabled={isSending}
       />
+      {error && <p className="reviews__error">{error}</p>}
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
                     To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.

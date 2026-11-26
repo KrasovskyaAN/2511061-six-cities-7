@@ -1,5 +1,5 @@
 import Card from '../../components/card/card';
-import type { Offer } from '../../mocks/offers';
+import type { Offer } from '../../store/types';
 import { Link } from 'react-router-dom';
 import { useAppSelector } from '../../hooks';
 

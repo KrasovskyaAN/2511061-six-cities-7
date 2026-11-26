@@ -1,4 +1,4 @@
-import type { Offer } from '../mocks/offers';
+import type { Offer } from '../store/types';
 import { SortType, SortTypeValue } from '../const';
 
 export function sortOffers(offers: Offer[], sortType: SortTypeValue): Offer[] {

@@ -9,6 +9,8 @@ import { changeCity } from '../../store/action';
 import { CITIES, SortType, SortTypeValue } from '../../const';
 import { sortOffers } from '../../utils/sort';
 import Sorting from '../../components/sorting/sorting';
+import Spinner from '../../components/spinner/spinner';
+import { logout } from '../../store/user-thunk';
 
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -26,6 +28,19 @@ function MainPage(): JSX.Element {
     setActiveSort(SortType.Popular);
   };
 
+  const isOffersLoading = useAppSelector((state) => state.isOffersLoading);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const isAuth = authorizationStatus === 'AUTH';
+  const userEmail = useAppSelector((state) => state.userEmail);
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
+  if (isOffersLoading) {
+    return <Spinner />;
+  }
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -38,18 +53,27 @@ function MainPage(): JSX.Element {
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <Link className="header__nav-link header__nav-link--profile" to="/favorites">
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </Link>
-                </li>
-                <li className="header__nav-item">
-                  <Link className="header__nav-link" to="/login">
-                    <span className="header__signout">Sign out</span>
-                  </Link>
-                </li>
+                {isAuth ? (
+                  <>
+                    <li className="header__nav-item user">
+                      <Link className="header__nav-link header__nav-link--profile" to="/favorites">
+                        <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+                        <span className="header__user-name user__name">{userEmail}</span>
+                      </Link>
+                    </li>
+                    <li className="header__nav-item">
+                      <Link className="header__nav-link" to="/login" onClick={handleLogout}>
+                        <span className="header__signout">Sign out</span>
+                      </Link>
+                    </li>
+                  </>
+                ) : (
+                  <li className="header__nav-item user">
+                    <Link className="header__nav-link header__nav-link--profile" to="/login">
+                      <span className="header__signin">Sign in</span>
+                    </Link>
+                  </li>
+                )}
               </ul>
             </nav>
           </div>

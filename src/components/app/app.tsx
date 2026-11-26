@@ -8,14 +8,15 @@ import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
 import { AppRoute } from '../../const';
 import { useAppDispatch } from '../../hooks';
-import { fillOffers } from '../../store/action';
-import { offers } from '../../mocks/offers';
+import { fetchOffers } from '../../store/offers-thunk';
+import { checkAuth } from '../../store/user-thunk';
 
 function App(): JSX.Element {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fillOffers(offers));
+    dispatch(fetchOffers());
+    dispatch(checkAuth());
   }, [dispatch]);
 
   return (
@@ -26,7 +27,7 @@ function App(): JSX.Element {
         <Route
           path={AppRoute.Favorites}
           element={
-            <PrivateRoute authorizationStatus={false}>
+            <PrivateRoute>
               <FavoritesPage />
             </PrivateRoute>
           }

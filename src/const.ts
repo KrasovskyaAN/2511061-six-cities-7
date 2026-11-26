@@ -24,3 +24,10 @@ export const SortType = {
 } as const;
 
 export type SortTypeValue = typeof SortType[keyof typeof SortType];
+
+export const OFFER_TYPE_LABELS: Record<string, string> = {
+  apartment: 'Apartment',
+  room: 'Room',
+  house: 'House',
+  hotel: 'Hotel',
+};
